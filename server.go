@@ -12,7 +12,6 @@ func main() {
 	app := fiber.New()
 
 	app.Use(middleware.Logger())
-	app.Use(middleware.Recover())
 
 	routers.LoadRouters(app)
 
