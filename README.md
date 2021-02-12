@@ -1,3 +1,2 @@
-# api_wms
 
-# Api vai gerenciar toda interação do App Interno da Empresa.
+# Gerenciar toda interação do App Interno da Empresa.
