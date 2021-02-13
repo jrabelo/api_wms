@@ -12,20 +12,17 @@ import (
 )
 
 func Autenticar(ctx *fiber.Ctx) {
-	metodo := ctx.Method()
 	login := ctx.FormValue("login")
 	senha := ctx.FormValue("senha")
 
-	if metodo != "POST" {
-		ctx.Status(200).Send("Metodo invalido!")
-	}
-
 	if len(strings.TrimSpace(login)) == 0 {
-		ctx.Status(200).Send("Campo Login está vazio!")
+		ctx.Status(200).JSON(fiber.Map{"msg": "Campo Login está vazio!"})
+		return
 	}
 
 	if len(strings.TrimSpace(senha)) == 0 {
-		ctx.Status(200).Send("Campo Senha está vazio!")
+		ctx.Status(200).JSON(fiber.Map{"msg": "Campo Senha está vazio!"})
+		return
 	}
 
 	dados := UsuarioModel.Autenticar(login, senha)
