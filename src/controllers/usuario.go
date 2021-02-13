@@ -12,20 +12,24 @@ import (
 )
 
 func Autenticar(ctx *fiber.Ctx) {
-	login := ctx.FormValue("login")
-	senha := ctx.FormValue("senha")
-
-	if len(strings.TrimSpace(login)) == 0 {
-		ctx.Status(200).JSON(fiber.Map{"msg": "Campo Login está vazio!"})
+	var body UsuarioModel.Request
+	err := ctx.BodyParser(&body)
+	if err != nil {
+		ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error:": "Não pode analisar json"})
 		return
 	}
 
-	if len(strings.TrimSpace(senha)) == 0 {
-		ctx.Status(200).JSON(fiber.Map{"msg": "Campo Senha está vazio!"})
+	if len(strings.TrimSpace(body.Login)) == 0 {
+		ctx.Status(200).JSON(fiber.Map{"msg": "Dados do Login está vazio!"})
 		return
 	}
 
-	dados := UsuarioModel.Autenticar(login, senha)
+	if len(strings.TrimSpace(body.Senha)) == 0 {
+		ctx.Status(200).JSON(fiber.Map{"msg": "Dados da Senha está vazio!"})
+		return
+	}
+
+	dados := UsuarioModel.Autenticar(body.Login, body.Senha)
 	jwtSecret := []byte(os.Getenv("SECRET_KEY"))
 
 	tk := jwt.New(jwt.SigningMethodHS256)

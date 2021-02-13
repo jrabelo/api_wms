@@ -18,6 +18,11 @@ type Usuario struct {
 	Senha     string `json:"senha"`
 }
 
+type Request struct {
+	Login string `json:"login"`
+	Senha string `json:"senha"`
+}
+
 func Autenticar(login, senha string) *Usuario {
 	db := database.Connect()
 	usuario := Usuario{}
