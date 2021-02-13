@@ -12,6 +12,10 @@ import (
 )
 
 func Autenticar(ctx *fiber.Ctx) {
+	ctx.Set("Access-Control-Allow-Origin", "*")
+	ctx.Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+	ctx.Set("Content-Type", "application/json")
+
 	var body UsuarioModel.Request
 	err := ctx.BodyParser(&body)
 	if err != nil {
