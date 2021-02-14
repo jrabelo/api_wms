@@ -1,4 +1,4 @@
-package UsuarioModel
+package Model
 
 import (
 	"api_wms/src/database"
@@ -18,12 +18,22 @@ type Usuario struct {
 	Senha     string `json:"senha"`
 }
 
-type Request struct {
-	Login string `json:"login"`
-	Senha string `json:"senha"`
+type RequestLogin struct {
+	ID        int    `json:"id"`
+	ID_FILIAL int    `json:"id_filial"`
+	Filial    string `json:"filial"`
+	Nome      string `json:"nome"`
+	Login     string `json:"login"`
+	Pass      string `json:"pass"`
 }
 
-func Autenticar(login, senha string) *Usuario {
+type RequestApp struct {
+	ID        int    `json:"id_user"`
+	ID_FILIAL int    `json:"id_empresa"`
+	Jwt       string `json:"jwt"`
+}
+
+func AutenticarUsuarios(login, pass string) *Usuario {
 	db := database.Connect()
 	usuario := Usuario{}
 
@@ -31,7 +41,7 @@ func Autenticar(login, senha string) *Usuario {
 	strSql += "FROM ARQT5008 "
 	strSql += "INNER JOIN ARQT100 ON NCODI_EMP = ID_FILIAL "
 	strSql += "WHERE LOGIN = :0 AND SENHA = :1 AND STATUS = 1"
-	row := db.QueryRow(strSql, login, senha).Scan(
+	row := db.QueryRow(strSql, login, pass).Scan(
 		&usuario.ID,
 		&usuario.ID_FILIAL,
 		&usuario.Filial,

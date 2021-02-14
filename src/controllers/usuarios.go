@@ -1,8 +1,7 @@
-package UsuarioControllers
+package Controller
 
 import (
-	UsuarioModel "api_wms/src/models"
-	"log"
+	Model "api_wms/src/models"
 	"os"
 	"strings"
 	"time"
@@ -11,12 +10,12 @@ import (
 	"github.com/gofiber/fiber"
 )
 
-func Autenticar(ctx *fiber.Ctx) {
-	ctx.Set("Access-Control-Allow-Origin", "*")
-	ctx.Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+func AutenticarUsuarios(ctx *fiber.Ctx) {
 	ctx.Set("Content-Type", "application/json")
+	ctx.Set("Access-Control-Allow-Origin", "*")
+	ctx.Set("Access-Control-Allow-Methods", "*")
 
-	var body UsuarioModel.Request
+	var body Model.RequestLogin
 	err := ctx.BodyParser(&body)
 	if err != nil {
 		ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error:": "Não pode analisar json"})
@@ -28,12 +27,12 @@ func Autenticar(ctx *fiber.Ctx) {
 		return
 	}
 
-	if len(strings.TrimSpace(body.Senha)) == 0 {
+	if len(strings.TrimSpace(body.Pass)) == 0 {
 		ctx.Status(200).JSON(fiber.Map{"msg": "Dados da Senha está vazio!"})
 		return
 	}
 
-	dados := UsuarioModel.Autenticar(body.Login, body.Senha)
+	dados := Model.AutenticarUsuarios(body.Login, body.Pass)
 	jwtSecret := []byte(os.Getenv("SECRET_KEY"))
 
 	tk := jwt.New(jwt.SigningMethodHS256)
@@ -43,7 +42,6 @@ func Autenticar(ctx *fiber.Ctx) {
 
 	token, err := tk.SignedString(jwtSecret)
 	if err != nil {
-		log.Println(err)
 		ctx.SendStatus(fiber.StatusInternalServerError)
 	}
 
