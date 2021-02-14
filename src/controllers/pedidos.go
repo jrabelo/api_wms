@@ -2,6 +2,7 @@ package Controller
 
 import (
 	Model "api_wms/src/models"
+	"log"
 	"strings"
 
 	"github.com/gofiber/fiber"
@@ -24,9 +25,14 @@ func CarregaTodosPedidos(ctx *fiber.Ctx) {
 		return
 	}
 
+	dados := Model.CarregaTodosPedidos(body.ID_FILIAL)
+	if dados != nil {
+		log.Fatal(dados)
+	}
+
 	response := fiber.Map{
-		"status": "ok",
-		"msg":    "Todos os pedidos...",
+		"pedings": dados,
+		"status":  "ok",
 	}
 
 	if err := ctx.JSON(response); err != nil {

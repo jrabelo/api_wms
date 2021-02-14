@@ -37,10 +37,17 @@ func AutenticarUsuarios(login, pass string) *Usuario {
 	db := database.Connect()
 	usuario := Usuario{}
 
-	strSql := "SELECT ID, ID_FILIAL, NOME_SITE, NOME, LOGIN, SENHA "
-	strSql += "FROM ARQT5008 "
-	strSql += "INNER JOIN ARQT100 ON NCODI_EMP = ID_FILIAL "
-	strSql += "WHERE LOGIN = :0 AND SENHA = :1 AND STATUS = 1"
+	strSql := `SELECT ARQT5008.ID
+	                , ARQT5008.ID_FILIAL
+					, ARQT100.NOME_SITE
+					, ARQT5008.NOME
+					, ARQT5008.LOGIN
+					, ARQT5008.SENHA 
+				 FROM ARQT5008
+	       INNER JOIN ARQT100 ON NCODI_EMP = ID_FILIAL
+	            WHERE LOGIN = :0 
+				  AND SENHA = :1 
+				  AND STATUS = 1`
 	row := db.QueryRow(strSql, login, pass).Scan(
 		&usuario.ID,
 		&usuario.ID_FILIAL,
