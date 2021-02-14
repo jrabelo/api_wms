@@ -9,7 +9,7 @@ import (
 )
 
 func CarregaTodosPedidos(ctx *fiber.Ctx) {
-	ctx.Set("Content-Type", "application/json")
+	ctx.Set("Access-Control-Allow-Headers", "*")
 	ctx.Set("Access-Control-Allow-Origin", "*")
 	ctx.Set("Access-Control-Allow-Methods", "*")
 
@@ -20,22 +20,17 @@ func CarregaTodosPedidos(ctx *fiber.Ctx) {
 		return
 	}
 
-	if body.ID == 0 || body.ID_FILIAL == 0 || len(strings.TrimSpace(body.Jwt)) == 0 {
+	if len(strings.TrimSpace(body.ID_USER)) == 0 || len(strings.TrimSpace(body.ID_EMPRESA)) == 0 || len(strings.TrimSpace(body.JWT)) == 0 {
 		ctx.Status(200).JSON(fiber.Map{"msg": "Parametros inválido!"})
 		return
 	}
 
-	dados := Model.CarregaTodosPedidos(body.ID_FILIAL)
+	dados := Model.CarregaTodosPedidos(body.ID_EMPRESA)
 	if dados == nil {
-		log.Fatal(dados)
+		log.Fatal("dados: ", dados)
 	}
 
-	response := fiber.Map{
-		"pedings": dados,
-		"status":  "ok",
-	}
-
-	if err := ctx.JSON(response); err != nil {
+	if err := ctx.JSON(dados); err != nil {
 		ctx.Next(err)
 	}
 

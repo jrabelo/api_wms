@@ -12,7 +12,7 @@ import (
 )
 
 func AutenticarUsuarios(ctx *fiber.Ctx) {
-	ctx.Set("Content-Type", "application/json")
+	ctx.Set("Access-Control-Allow-Headers", "*")
 	ctx.Set("Access-Control-Allow-Origin", "*")
 	ctx.Set("Access-Control-Allow-Methods", "*")
 
@@ -35,7 +35,7 @@ func AutenticarUsuarios(ctx *fiber.Ctx) {
 
 	dados := Model.AutenticarUsuarios(body.Login, body.Pass)
 	if dados == nil {
-		log.Fatal(dados)
+		log.Fatal("dados: ", dados)
 	}
 
 	jwtSecret := []byte(os.Getenv("SECRET_KEY"))

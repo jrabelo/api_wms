@@ -24,9 +24,9 @@ type RequestLogin struct {
 }
 
 type RequestApp struct {
-	ID        int    `json:"id_user"`
-	ID_FILIAL int    `json:"id_empresa"`
-	Jwt       string `json:"jwt"`
+	ID_USER    string `json:"id_user"`
+	ID_EMPRESA string `json:"id_empresa"`
+	JWT        string `json:"jwt"`
 }
 
 func AutenticarUsuarios(login, pass string) *Usuario {
@@ -45,7 +45,7 @@ func AutenticarUsuarios(login, pass string) *Usuario {
 	            WHERE LOGIN = :0 
 				  AND SENHA = :1 
 				  AND STATUS = 1`
-				  
+
 	row := db.QueryRow(strSql, login, pass).Scan(
 		&usuario.ID,
 		&usuario.ID_FILIAL,
