@@ -26,7 +26,7 @@ func CarregaTodosPedidos(ctx *fiber.Ctx) {
 	}
 
 	dados := Model.CarregaTodosPedidos(body.ID_FILIAL)
-	if dados != nil {
+	if dados == nil {
 		log.Fatal(dados)
 	}
 

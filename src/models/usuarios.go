@@ -5,10 +5,6 @@ import (
 	"log"
 )
 
-type Usuarios struct {
-	Usuarios []*Usuarios `json:"usuarios"`
-}
-
 type Usuario struct {
 	ID        int    `json:"id"`
 	ID_FILIAL int    `json:"id_filial"`
@@ -35,6 +31,7 @@ type RequestApp struct {
 
 func AutenticarUsuarios(login, pass string) *Usuario {
 	db := database.Connect()
+
 	usuario := Usuario{}
 
 	strSql := `SELECT ARQT5008.ID
@@ -48,6 +45,7 @@ func AutenticarUsuarios(login, pass string) *Usuario {
 	            WHERE LOGIN = :0 
 				  AND SENHA = :1 
 				  AND STATUS = 1`
+				  
 	row := db.QueryRow(strSql, login, pass).Scan(
 		&usuario.ID,
 		&usuario.ID_FILIAL,

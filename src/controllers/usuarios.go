@@ -34,10 +34,10 @@ func AutenticarUsuarios(ctx *fiber.Ctx) {
 	}
 
 	dados := Model.AutenticarUsuarios(body.Login, body.Pass)
-	if dados != nil {
+	if dados == nil {
 		log.Fatal(dados)
 	}
-	
+
 	jwtSecret := []byte(os.Getenv("SECRET_KEY"))
 
 	tk := jwt.New(jwt.SigningMethodHS256)
