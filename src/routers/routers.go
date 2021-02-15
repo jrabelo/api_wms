@@ -17,4 +17,5 @@ func LoadRouters(app *fiber.App) {
 	app.Use("/", func(ctx *fiber.Ctx) {
 		ctx.Status(200).JSON(fiber.Map{"msg": "Tudo funcionando..."})
 	})
+
 }
