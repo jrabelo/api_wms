@@ -13,24 +13,24 @@ func CarregaTodosPedidos(ctx *fiber.Ctx) {
 	ctx.Set("Access-Control-Allow-Origin", "*")
 	ctx.Set("Access-Control-Allow-Methods", "*")
 
-	var body Model.RequestApp
-	err := ctx.BodyParser(&body)
+	var request Model.RequestApp
+	err := ctx.BodyParser(&request)
 	if err != nil {
 		ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error:": "Não pode analisar json"})
 		return
 	}
 
-	if len(strings.TrimSpace(body.ID_USER)) == 0 || len(strings.TrimSpace(body.ID_EMPRESA)) == 0 || len(strings.TrimSpace(body.JWT)) == 0 {
+	if len(strings.TrimSpace(request.ID_USER)) == 0 || len(strings.TrimSpace(request.ID_EMPRESA)) == 0 || len(strings.TrimSpace(request.JWT)) == 0 {
 		ctx.Status(200).JSON(fiber.Map{"msg": "Parametros inválido!"})
 		return
 	}
 
-	dados := Model.CarregaTodosPedidos(body.ID_EMPRESA)
-	if dados == nil {
-		log.Fatal("dados: ", dados)
+	pedidos := Model.CarregaTodosPedidos(request.ID_EMPRESA)
+	if pedidos == nil {
+		log.Fatal("Pedidos: ", pedidos)
 	}
 
-	if err := ctx.JSON(dados); err != nil {
+	if err := ctx.JSON(pedidos); err != nil {
 		ctx.Next(err)
 	}
 

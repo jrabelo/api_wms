@@ -8,6 +8,7 @@ import (
 
 func LoadRouters(app *fiber.App) {
 	app.Post("/api/login", Controller.AutenticarUsuarios)
+	app.Post("/api/log-usuario", Controller.LogUsuario)
 	app.Post("/api/pedings", Controller.CarregaTodosPedidos)
 
 	app.Use("/api", func(ctx *fiber.Ctx) {

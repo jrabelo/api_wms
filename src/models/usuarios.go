@@ -63,3 +63,20 @@ func AutenticarUsuarios(login, pass string) *Usuario {
 
 	return &usuario
 }
+
+func AtualizaLog(filial, usuario string) bool {
+	db := database.Connect()
+
+	strSql := `UPDATE ARQT5008
+				  SET ARQT5008.SESSAO = SYSDATE
+	                , ARQT5008.SISTEMA = 'APP'
+                WHERE ARQT5008.ID = :0
+	              AND ARQT5008.ID_FILIAL = :1`
+
+	_, err := db.Exec(strSql, usuario, filial)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return true
+}
